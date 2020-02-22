@@ -14,8 +14,26 @@ function Search(props) {
        />
        <button className='search-btn' onClick={props.queryDatabase}>Search</button>
      </div>
+     {props.hits !== undefined && props.hits.id && props.error === false && (
+       <div className='search-results'>
+         <p>We found 1 search result</p>
+         <p>{props.hits.title}</p>
+         <img src={props.hits.cover_image} alt={props.hits.title} />
+         <button>Expand</button>
+       </div>
+     )}
+     {props.hits === undefined && props.error === false && (
+       <div>
+        <p>Sorry, we found no results :(</p>
+       </div>
+     )}
+     {props.error === true && (
+       <div>
+         <p>Something went wrong. Please try again later.</p>
+       </div>
+     )}
     </div>
   )
-}
+ }
 
 export default Search

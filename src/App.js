@@ -40,7 +40,7 @@ function App() {
   return (
     <div className="App">
       <Header />
-      <Search updateQuery={updateQuery} queryDatabase={queryDatabase} hits={data}/>
+      <Search updateQuery={updateQuery} queryDatabase={queryDatabase} hits={data} error={error}/>
       <Footer />
     </div>
   );
