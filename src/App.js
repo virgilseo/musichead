@@ -6,22 +6,41 @@ import Footer from './Footer.js';
 
 function App() {
 
-  //Set initial state of the query
+  //Set the initial state
 
   const [query, setQuery] = useState('');
+  const [data, setData] = useState([]);
+  const [error, setError] = useState(false);
 
   //Update query on user input
 
-  function updateQuery(userQuery)  {
+  function updateQuery(userQuery) {
     setQuery(userQuery);
   }
 
-  console.log(query);
+  //Query external api for artist name based on user input
+
+  function queryDatabase() {
+
+    fetch(`https://api.discogs.com/database/search?q=${query}&page=1&per_page=1&key=zMRtiWGGUaDpqSnajoth&secret=ETfHznfoZWHdomEtLyKqmsSDfPDzghIY`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Something went wrong ...');
+      }
+     })
+      .then(data => setData(data.results[0])).then(error =>  setError(false))
+      .catch(error =>  setError(true))
+  }
+
+  console.log(data);
+  console.log(error);
 
   return (
     <div className="App">
       <Header />
-      <Search updateQuery = {updateQuery} />
+      <Search updateQuery={updateQuery} queryDatabase={queryDatabase} hits={data}/>
       <Footer />
     </div>
   );
