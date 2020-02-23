@@ -3,6 +3,7 @@ import './App.css';
 import Header from './Header.js';
 import Search from './Search';
 import Footer from './Footer.js';
+import {Route, Link, BrowserRouter as Router} from 'react-router-dom';
 
 function App() {
 
@@ -39,9 +40,13 @@ function App() {
 
   return (
     <div className="App">
-      <Header />
-      <Search updateQuery={updateQuery} queryDatabase={queryDatabase} hits={data} error={error}/>
-      <Footer />
+      <Router>
+        <Route path='/'>
+          <Header />
+          <Search updateQuery={updateQuery} queryDatabase={queryDatabase} hits={data} error={error}/>
+          <Footer />
+        </Route>
+      </Router>
     </div>
   );
 }
