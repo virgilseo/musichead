@@ -46,8 +46,8 @@ function App() {
         <Search updateQuery={updateQuery} queryDatabase={queryDatabase} hits={data} error={error}/>
         <Footer />
       </Route>
-      <Route exact path='/results'>
-        <ArtistPage />
+      <Route path='/results'>
+        <ArtistPage hits={data} />
       </Route>
     </div>
   );
