@@ -4,7 +4,7 @@ import React from 'react';
 function Search(props) {
 
   return(
-    <div className='search container'>
+    <div className='search-container'>
      <div className='input-wrapper'>
        <input
          type='text'
