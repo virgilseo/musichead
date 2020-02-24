@@ -4,6 +4,7 @@ import Header from './Header.js';
 import Search from './Search';
 import Footer from './Footer.js';
 import {Route} from 'react-router-dom';
+import ArtistPage from './ArtistPage.js';
 
 function App() {
 
@@ -40,10 +41,13 @@ function App() {
 
   return (
     <div className="App">
-      <Route path='/'>
+      <Route exact path='/'>
         <Header />
         <Search updateQuery={updateQuery} queryDatabase={queryDatabase} hits={data} error={error}/>
         <Footer />
+      </Route>
+      <Route exact path='/results'>
+        <ArtistPage />
       </Route>
     </div>
   );

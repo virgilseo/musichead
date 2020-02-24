@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link} from 'react-router-dom';
 
 
 function Search(props) {
@@ -19,7 +20,9 @@ function Search(props) {
          <p>We found 1 search result</p>
          <p>{props.hits.title}</p>
          <img src={props.hits.cover_image} alt={props.hits.title} />
-         <button>Expand</button>
+         <Link to='/results'>
+           <button>Expand</button>
+         </Link>
        </div>
      )}
      {props.hits === undefined && props.error === false && (
