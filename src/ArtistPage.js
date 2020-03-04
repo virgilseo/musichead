@@ -31,7 +31,7 @@ function ArtistPage(props) {
 
   useEffect(() => {
 
-    fetch(`https://api.discogs.com//artists/${props.hits.id}/releases`)
+    fetch(`https://api.discogs.com//artists/${props.hits.id}/releases?page=1&per_page=100&sort=year&sort_order=asc`)
     .then(response => {
       if (response.ok) {
         return response.json();
@@ -86,6 +86,15 @@ function ArtistPage(props) {
       </section>
       <section>
        <h3>Discography</h3>
+         <ul>
+           {releases.map((release, index) => (
+             <li key={index}>
+               <p>{release.artist}</p>
+               <p>{release.title}</p>
+               <p>{release.year}</p>
+             </li>
+           ))}
+         </ul>
        <p></p>
       </section>
     </div>
