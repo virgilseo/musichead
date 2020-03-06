@@ -5,7 +5,7 @@ function Discogs(props) {
 
   // Desconstruct props
 
-  const {data, error, releases} = props
+  const {data, error, releases} = props;
 
   // Display artist information(biography, web links and releases)
   // on the page uisng information from the discogs api
@@ -14,7 +14,9 @@ function Discogs(props) {
     <div className='discogs-container'>
       <section>
         <h3>Bio</h3>
-        <p>{data.profile}</p>
+        {data.profile && (
+          <p>{data.profile.replace(/a=|[[]|m=|l=|/g, '').replace(/[[b]]|[/]|]/g, '')}</p>
+        )}
       </section>
       <section>
         <h3>Band members</h3>
