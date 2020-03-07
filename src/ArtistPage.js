@@ -8,7 +8,7 @@ function ArtistPage(props) {
   //Set initial state
 
   const [data, setData] = useState([]);
-  const [error, setError] = useState(false);
+  const [discogsError, setError] = useState(false);
   const [releases, setReleases] = useState([]);
 
   //Fetch artist information from the discogs api
@@ -46,7 +46,7 @@ function ArtistPage(props) {
   }, [props.hits.id])
 
   console.log(data);
-  console.log(error);
+  console.log(discogsError);
   console.log(props.hits.id);
   console.log(releases);
 
@@ -56,11 +56,14 @@ function ArtistPage(props) {
       <Link to='/'>
         <i className='material-icons'>arrow_back</i>
       </Link>
-      <Discogs
-        data={data}
-        error={error}
-        releases={releases}
-      />
+      {discogsError === true ? (
+        <p>Something went wrong. Please try again later.</p>
+      ) : (
+        <Discogs
+          data={data}
+          releases={releases}
+        />
+      )}
     </div>
   );
 }
