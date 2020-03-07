@@ -19,9 +19,12 @@ function Discogs(props) {
         )}
       </section>
       <section>
-        <h3>Band members</h3>
+        <h3>Band members / Real name</h3>
         {data.realname && (
           <p>{data.realname}</p>
+        )}
+        {data.name && (
+          <p>{data.name}</p>
         )}
         {data.members && (
           <ul>

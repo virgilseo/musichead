@@ -32,7 +32,7 @@ function ArtistPage(props) {
 
   useEffect(() => {
 
-    fetch(`https://api.discogs.com//artists/${props.hits.id}/releases?page=1&per_page=100&sort=year&sort_order=asc`)
+    fetch(`https://api.discogs.com//artists/${props.hits.id}/releases?page=1&per_page=500&sort=year&sort_order=asc`)
     .then(response => {
       if (response.ok) {
         return response.json();
@@ -40,7 +40,7 @@ function ArtistPage(props) {
         throw new Error('Something went wrong ...');
       }
      })
-      .then(data => setReleases(data.releases)).then(error => setError(false))
+      .then(data => setReleases(data.releases.filter(release => release.role === 'Main'))).then(error => setError(false))
       .catch(error => setError(true))
 
   }, [props.hits.id])
