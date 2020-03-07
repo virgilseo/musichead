@@ -5,7 +5,7 @@ function Discogs(props) {
 
   // Desconstruct props
 
-  const {data, error, releases} = props;
+  const {data, releases} = props;
 
   // Display artist information(biography, web links and releases)
   // on the page uisng information from the discogs api

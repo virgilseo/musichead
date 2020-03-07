@@ -38,16 +38,32 @@ function App() {
 
   console.log(data);
   console.log(error);
+  console.log(query);
+
+  //Clear search results when user navigates back to the search page
+
+  const clearSearch = () => {
+    setData([]);
+  }
 
   return (
     <div className="App">
       <Route exact path='/'>
         <Header />
-        <Search updateQuery={updateQuery} queryDatabase={queryDatabase} hits={data} error={error}/>
+        <Search
+          updateQuery={updateQuery}
+          queryDatabase={queryDatabase}
+          hits={data}
+          error={error}
+          query={query}
+        />
         <Footer />
       </Route>
       <Route path='/results'>
-        <ArtistPage hits={data} />
+        <ArtistPage
+          hits={data}
+          clearSearch={clearSearch}
+        />
       </Route>
     </div>
   );

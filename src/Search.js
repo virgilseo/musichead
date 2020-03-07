@@ -15,7 +15,7 @@ function Search(props) {
        />
        <button className='search-btn' onClick={props.queryDatabase}>Search</button>
      </div>
-     {props.hits !== undefined && props.hits.id && props.error === false && (
+     {props.hits !== undefined && props.hits.id && props.error === false && props.hits !== [] && (
        <div className='search-results'>
          <p>We found 1 search result</p>
          <p>{props.hits.title}</p>

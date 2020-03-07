@@ -54,7 +54,7 @@ function ArtistPage(props) {
   return (
     <div>
       <Link to='/'>
-        <i className='material-icons'>arrow_back</i>
+        <i className='material-icons' onClick={props.clearSearch}>arrow_back</i>
       </Link>
       {discogsError === true ? (
         <p>Something went wrong. Please try again later.</p>
