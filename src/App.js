@@ -63,6 +63,7 @@ function App() {
         <ArtistPage
           hits={data}
           clearSearch={clearSearch}
+          query={query}
         />
       </Route>
     </div>

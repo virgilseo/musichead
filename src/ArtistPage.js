@@ -10,6 +10,8 @@ function ArtistPage(props) {
   const [data, setData] = useState([]);
   const [discogsError, setError] = useState(false);
   const [releases, setReleases] = useState([]);
+  const [eventsData, setEventsData] = useState([]);
+  const [eventsError, setEventsError] = useState(false);
 
   //Fetch artist information from the discogs api
 
@@ -45,10 +47,27 @@ function ArtistPage(props) {
 
   }, [props.hits.id])
 
+  // Fetch artist events from ticket master api
+
+  useEffect(() => {
+
+    fetch(`https://app.ticketmaster.com/discovery/v2/events.json?apikey=hkbdfMkgTS9PiqJdNMKdj5bg7aKGR4Wk&keyword=${props.query}`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Something went wrong ...');
+      }
+     })
+      .then(data => setEventsData(data)).then(error => setEventsError(false))
+      .catch(error => setEventsError(true))
+  }, [props.query])
+
   console.log(data);
   console.log(discogsError);
   console.log(props.hits.id);
   console.log(releases);
+  console.log(eventsData);
 
 
   return (
