@@ -60,7 +60,7 @@ function ArtistPage(props) {
         throw new Error('Something went wrong ...');
       }
      })
-      .then(data => setEventsData(data)).then(error => setEventsError(false))
+      .then(data => setEventsData(data._embedded.events)).then(error => setEventsError(false))
       .catch(error => setEventsError(true))
   }, [props.query])
 
