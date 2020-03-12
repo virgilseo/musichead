@@ -2,6 +2,7 @@ import React from 'react';
 import {Link} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import Discogs from './Discogs.js';
+import Events from './Events.js';
 
 function ArtistPage(props) {
 
@@ -83,7 +84,14 @@ function ArtistPage(props) {
           releases={releases}
         />
       )}
-    </div>
+      {eventsError === true ? (
+        <p>Something went wrong. Please try again later.</p>
+      ) : (
+        <Events
+          events={eventsData}
+        />
+      )}
+  </div>
   );
 }
 
