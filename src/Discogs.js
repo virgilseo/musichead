@@ -12,53 +12,57 @@ function Discogs(props) {
 
   return(
     <div className='discogs-container'>
-      <section>
-        <h3>Bio</h3>
-        {data.profile && (
+      {data.profile && (
+        <section>
+          <h3>Bio</h3>
           <p>{data.profile.replace(/a=|[[]|m=|l=|/g, '').replace(/[[b]]|[/]|]/g, '')}</p>
-        )}
-      </section>
-      <section>
-        <h3>Band members / Real name</h3>
-        {data.realname && (
+        </section>
+      )}
+      {data.realname && (
+        <section>
+          <h3>Real name</h3>
           <p>{data.realname}</p>
-        )}
-        {data.name && (
-          <p>{data.name}</p>
-        )}
-        {data.members && (
-          <ul>
-            {data.members.map((member, index) => (
-              <li key={index}>{member.name}</li>
-            ))}
-          </ul>
-        )}
-      </section>
-      <section>
-        <h3>On the web</h3>
-        {data.urls !== undefined && (
-          <ul>
-            {data.urls.map((url, index) => (
-              <li key={index}>
-                <a href={url} target="_blank" rel='noopener noreferrer'>{url}</a>
-              </li>
-            ))}
-          </ul>
-        )}
-      </section>
-      <section>
-       <h3>Discography</h3>
-         <ul>
-           {releases.map((release, index) => (
-             <li key={index}>
-               <p>{release.artist}</p>
-               <p>{release.title}</p>
-               <p>{release.year}</p>
-             </li>
-           ))}
-         </ul>
-      </section>
-    </div>
+        </section>
+      )}
+      {data.members && (
+        <section>
+          <h3>Band members</h3>
+          {data.members && (
+            <ul>
+              {data.members.map((member, index) => (
+                <li key={index}>{member.name}</li>
+              ))}
+            </ul>
+          )}
+        </section>
+      )}
+      {data.urls && (
+        <section>
+          <h3>On the web</h3>
+            <ul>
+              {data.urls.map((url, index) => (
+                <li key={index}>
+                  <a href={url} target="_blank" rel='noopener noreferrer'>{url}</a>
+                </li>
+              ))}
+            </ul>
+        </section>
+      )}
+      {releases && (
+        <section>
+         <h3>Discography</h3>
+           <ul>
+             {releases.map((release, index) => (
+               <li key={index}>
+                 <p>{release.artist}</p>
+                 <p>{release.title}</p>
+                 <p>{release.year}</p>
+               </li>
+             ))}
+           </ul>
+        </section>
+      )}
+   </div>
   )
 }
 
