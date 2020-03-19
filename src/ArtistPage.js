@@ -12,7 +12,7 @@ function ArtistPage(props) {
   const [discogsError, setError] = useState(false);
   const [releases, setReleases] = useState([]);
   const [eventsData, setEventsData] = useState([]);
-  const [eventsError, setEventsError] = useState(false);
+  const [eventsError, setEventsError] = useState('');
 
   //Fetch artist information from the discogs api
 
@@ -69,6 +69,7 @@ function ArtistPage(props) {
   console.log(props.hits.id);
   console.log(releases);
   console.log(eventsData);
+  console.log(eventsError);
 
 
   return (
@@ -84,9 +85,7 @@ function ArtistPage(props) {
           releases={releases}
         />
       )}
-      {eventsError === true ? (
-        <p>Something went wrong. Please try again later.</p>
-      ) : (
+      {eventsData.length > 0 && (
         <Events
           events={eventsData}
         />
