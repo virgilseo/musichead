@@ -64,12 +64,16 @@ function ArtistPage(props) {
       .catch(error => setEventsError(true))
   }, [props.query])
 
+  // Filter out events that are not related to music 
+  const filteredEvents = eventsData.filter((event) => event.classifications).filter((event) => event.classifications[0].segment.name === 'Music');
+
   console.log(data);
   console.log(discogsError);
   console.log(props.hits.id);
   console.log(releases);
   console.log(eventsData);
   console.log(eventsError);
+  console.log(filteredEvents)
 
 
   return (
@@ -87,7 +91,7 @@ function ArtistPage(props) {
       )}
       {eventsData.length > 0 && (
         <Events
-          events={eventsData}
+          events={filteredEvents}
         />
       )}
   </div>
