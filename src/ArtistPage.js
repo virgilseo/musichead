@@ -14,11 +14,17 @@ function ArtistPage(props) {
   const [eventsData, setEventsData] = useState([]);
   const [eventsError, setEventsError] = useState('');
 
+  //Get query and artist id from local storage and store them in variables
+
+  const localQuery = localStorage.getItem('query');
+  const localArtistId = localStorage.getItem('artist');
+
+
   //Fetch artist information from the discogs api
 
   useEffect(() => {
 
-    fetch(`https://api.discogs.com/artists/${props.hits.id}`)
+    fetch(`https://api.discogs.com/artists/${localArtistId}`)
     .then(response => {
       if (response.ok) {
         return response.json();
@@ -29,13 +35,13 @@ function ArtistPage(props) {
       .then(data => setData(data)).then(error => setError(false))
       .catch(error => setError(true))
 
-  }, [props.hits.id])
+  }, [localArtistId])
 
 // Fetch artist discography from discogs api
 
   useEffect(() => {
 
-    fetch(`https://api.discogs.com//artists/${props.hits.id}/releases?page=1&per_page=500&sort=year&sort_order=asc`)
+    fetch(`https://api.discogs.com//artists/${localArtistId}/releases?page=1&per_page=500&sort=year&sort_order=asc`)
     .then(response => {
       if (response.ok) {
         return response.json();
@@ -46,13 +52,13 @@ function ArtistPage(props) {
       .then(data => setReleases(data.releases.filter(release => release.role === 'Main'))).then(error => setError(false))
       .catch(error => setError(true))
 
-  }, [props.hits.id])
+  }, [localArtistId])
 
   // Fetch artist events from ticket master api
 
   useEffect(() => {
 
-    fetch(`https://app.ticketmaster.com/discovery/v2/events.json?apikey=hkbdfMkgTS9PiqJdNMKdj5bg7aKGR4Wk&keyword=${props.query}`)
+    fetch(`https://app.ticketmaster.com/discovery/v2/events.json?apikey=hkbdfMkgTS9PiqJdNMKdj5bg7aKGR4Wk&keyword=${localQuery}`)
     .then(response => {
       if (response.ok) {
         return response.json();
@@ -62,10 +68,16 @@ function ArtistPage(props) {
      })
       .then(data => setEventsData(data._embedded.events)).then(error => setEventsError(false))
       .catch(error => setEventsError(true))
-  }, [props.query])
+  }, [localQuery])
 
-  // Filter out events that are not related to music 
+  // Filter out events that are not related to music
   const filteredEvents = eventsData.filter((event) => event.classifications).filter((event) => event.classifications[0].segment.name === 'Music');
+
+  //Store artist id in local storage
+
+  if (props.hits.id ) {
+    localStorage.setItem('artist', props.hits.id)
+  }
 
   console.log(data);
   console.log(discogsError);
@@ -74,6 +86,8 @@ function ArtistPage(props) {
   console.log(eventsData);
   console.log(eventsError);
   console.log(filteredEvents)
+  console.log(localQuery);
+  console.log(localArtistId);
 
 
   return (

@@ -33,18 +33,24 @@ function App() {
       }
      })
       .then(data => setData(data.results[0])).then(error =>  setError(false))
-      .catch(error =>  setError(true))
+      .catch(error =>  setError(true));
+
+    //Store query in local storage
+    localStorage.setItem('query', query);
   }
 
   console.log(data);
   console.log(error);
   console.log(query);
 
+
+
   //Clear search results when user navigates back to the search page
 
   const clearSearch = () => {
     setData([]);
   }
+
 
   return (
     <div className="App">
