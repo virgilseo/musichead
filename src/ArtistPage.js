@@ -14,6 +14,12 @@ function ArtistPage(props) {
   const [eventsData, setEventsData] = useState([]);
   const [eventsError, setEventsError] = useState('');
 
+  //Store artist id in local storage
+
+  if (props.hits.id ) {
+    localStorage.setItem('artist', props.hits.id)
+  }
+  
   //Get query and artist id from local storage and store them in variables
 
   const localQuery = localStorage.getItem('query');
@@ -72,12 +78,6 @@ function ArtistPage(props) {
 
   // Filter out events that are not related to music
   const filteredEvents = eventsData.filter((event) => event.classifications).filter((event) => event.classifications[0].segment.name === 'Music');
-
-  //Store artist id in local storage
-
-  if (props.hits.id ) {
-    localStorage.setItem('artist', props.hits.id)
-  }
 
   console.log(data);
   console.log(discogsError);
