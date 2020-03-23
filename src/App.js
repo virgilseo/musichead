@@ -39,6 +39,7 @@ function App() {
     localStorage.setItem('query', query);
   }
 
+
   console.log(data);
   console.log(error);
   console.log(query);
@@ -49,6 +50,7 @@ function App() {
 
   const clearSearch = () => {
     setData([]);
+    setQuery('');
   }
 
 

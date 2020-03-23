@@ -13,7 +13,7 @@ function Search(props) {
          className='search-input'
          onChange={(event) => {props.updateQuery(event.target.value)}}
        />
-       <button className='search-btn' onClick={props.queryDatabase}>Search</button>
+       <button className='search-btn' onClick={props.query !== '' ? props.queryDatabase : undefined }>Search</button>
      </div>
      {props.hits !== undefined && props.hits.id && props.error === false && props.hits !== [] && (
        <div className='search-results'>
