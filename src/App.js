@@ -13,6 +13,8 @@ function App() {
   const [query, setQuery] = useState('');
   const [data, setData] = useState([]);
   const [error, setError] = useState(false);
+  const [relatedArtistData, setRelatedArtistData] = useState([]);
+  const [relatedArtistError, setRelatedArtistError] = useState(false);
 
   //Update query on user input
 
@@ -23,6 +25,8 @@ function App() {
   //Query external api for artist name based on user input
 
   function queryDatabase() {
+
+    //Search on discogs database for artist by name
 
     fetch(`https://api.discogs.com/database/search?q=${query}&page=1&per_page=1&key=zMRtiWGGUaDpqSnajoth&secret=ETfHznfoZWHdomEtLyKqmsSDfPDzghIY`)
     .then(response => {
@@ -35,6 +39,20 @@ function App() {
       .then(data => setData(data.results[0])).then(error =>  setError(false))
       .catch(error =>  setError(true));
 
+  //Search on musixmatch database for artist by name
+
+    fetch(`https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/artist.search?q_artist=${query}&page_size=1&apikey=460e6f530ef1588d40304db0a3596ab4`)
+    .then(response => {
+      if (response.ok) {
+        return response.json(response);
+      } else {
+        throw new Error('Something went wrong ...');
+      }
+     })
+      .then(data => setRelatedArtistData(data.message.body.artist_list[0].artist)).then(error =>  setRelatedArtistError(false))
+      .catch(error =>  setRelatedArtistError(true));
+
+
     //Store query in local storage
     localStorage.setItem('query', query);
   }
@@ -43,6 +61,8 @@ function App() {
   console.log(data);
   console.log(error);
   console.log(query);
+  console.log(relatedArtistData);
+  console.log(relatedArtistError);
 
 
 
@@ -72,6 +92,8 @@ function App() {
           hits={data}
           clearSearch={clearSearch}
           query={query}
+          musixmatchArtistId={relatedArtistData.id}
+          relatedArtistError={setRelatedArtistError}
         />
       </Route>
     </div>
