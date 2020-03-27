@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import Discogs from './Discogs.js';
 import Events from './Events.js';
+import RelatedArtists from './RelatedArtists.js'
 
 function ArtistPage(props) {
 
@@ -13,13 +14,15 @@ function ArtistPage(props) {
   const [releases, setReleases] = useState([]);
   const [eventsData, setEventsData] = useState([]);
   const [eventsError, setEventsError] = useState('');
+  const [relatedArtists, setRelatedArtist] = useState([]);
+  const [relatedArtistsError, setRelatedArtistError] = useState(false);
 
   //Store artist id in local storage
 
   if (props.hits.id ) {
     localStorage.setItem('artist', props.hits.id)
   }
-  
+
   //Get query and artist id from local storage and store them in variables
 
   const localQuery = localStorage.getItem('query');
@@ -79,15 +82,27 @@ function ArtistPage(props) {
   // Filter out events that are not related to music
   const filteredEvents = eventsData.filter((event) => event.classifications).filter((event) => event.classifications[0].segment.name === 'Music');
 
-  console.log(data);
-  console.log(discogsError);
-  console.log(props.hits.id);
-  console.log(releases);
-  console.log(eventsData);
-  console.log(eventsError);
-  console.log(filteredEvents)
-  console.log(localQuery);
-  console.log(localArtistId);
+  //Fetch related artist from musixmatch api
+
+  useEffect(() => {
+
+    fetch(`https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/artist.related.get?artist_id=${props.musixmatchArtistId}&page_size=10&page=1&apikey=460e6f530ef1588d40304db0a3596ab4`)
+    .then(response => {
+      if (response.ok) {
+        return response.json();
+      } else {
+        throw new Error('Something went wrong ...');
+      }
+     })
+      .then(data => setRelatedArtist(data.message.body.artist_list)).then(error => setRelatedArtistError(false))
+      .catch(error => setRelatedArtistError(true))
+  }, [props.musixmatchArtistId])
+
+
+
+  console.log(relatedArtists);
+  console.log(relatedArtistsError);
+  console.log(props.musixmatchArtistId)
 
 
   return (
@@ -108,6 +123,9 @@ function ArtistPage(props) {
           events={filteredEvents}
         />
       )}
+      <RelatedArtists
+       relatedArtist={relatedArtists}
+      />
   </div>
   );
 }

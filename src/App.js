@@ -49,7 +49,7 @@ function App() {
         throw new Error('Something went wrong ...');
       }
      })
-      .then(data => setRelatedArtistData(data.message.body.artist_list[0].artist)).then(error =>  setRelatedArtistError(false))
+      .then(data => setRelatedArtistData(data.message.body.artist_list[0].artist.artist_id)).then(error =>  setRelatedArtistError(false))
       .catch(error =>  setRelatedArtistError(true));
 
 
@@ -92,7 +92,7 @@ function App() {
           hits={data}
           clearSearch={clearSearch}
           query={query}
-          musixmatchArtistId={relatedArtistData.id}
+          musixmatchArtistId={relatedArtistData}
           relatedArtistError={setRelatedArtistError}
         />
       </Route>
