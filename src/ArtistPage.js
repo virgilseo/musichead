@@ -17,16 +17,23 @@ function ArtistPage(props) {
   const [relatedArtists, setRelatedArtist] = useState([]);
   const [relatedArtistsError, setRelatedArtistError] = useState(false);
 
-  //Store artist id in local storage
+  //Store discogs artist id in local storage
 
   if (props.hits.id ) {
-    localStorage.setItem('artist', props.hits.id)
+    localStorage.setItem('artist', props.hits.id);
+  }
+
+  // Store musixmatch artist id in local storage
+
+  if (props.musixmatchArtist.artist_id)  {
+    localStorage.setItem('relatedArtist',props.musixmatchArtist.artist_id);
   }
 
   //Get query and artist id from local storage and store them in variables
 
   const localQuery = localStorage.getItem('query');
   const localArtistId = localStorage.getItem('artist');
+  const localRelatedArtistId = localStorage.getItem('relatedArtist');
 
 
   //Fetch artist information from the discogs api
@@ -86,7 +93,7 @@ function ArtistPage(props) {
 
   useEffect(() => {
 
-    fetch(`https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/artist.related.get?artist_id=${props.musixmatchArtistId}&page_size=10&page=1&apikey=460e6f530ef1588d40304db0a3596ab4`)
+    fetch(`https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/artist.related.get?artist_id=${localRelatedArtistId}&page_size=10&page=1&apikey=460e6f530ef1588d40304db0a3596ab4`)
     .then(response => {
       if (response.ok) {
         return response.json();
@@ -96,13 +103,14 @@ function ArtistPage(props) {
      })
       .then(data => setRelatedArtist(data.message.body.artist_list)).then(error => setRelatedArtistError(false))
       .catch(error => setRelatedArtistError(true))
-  }, [props.musixmatchArtistId])
+  }, [localRelatedArtistId])
 
 
 
   console.log(relatedArtists);
   console.log(relatedArtistsError);
-  console.log(props.musixmatchArtistId)
+  console.log(props.musixmatchArtist);
+  console.log(localRelatedArtistId);
 
 
   return (

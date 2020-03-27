@@ -49,13 +49,15 @@ function App() {
         throw new Error('Something went wrong ...');
       }
      })
-      .then(data => setRelatedArtistData(data.message.body.artist_list[0].artist.artist_id)).then(error =>  setRelatedArtistError(false))
+      .then(data => setRelatedArtistData(data.message.body.artist_list[0].artist)).then(error =>  setRelatedArtistError(false))
       .catch(error =>  setRelatedArtistError(true));
 
 
     //Store query in local storage
     localStorage.setItem('query', query);
+
   }
+
 
 
   console.log(data);
@@ -92,7 +94,7 @@ function App() {
           hits={data}
           clearSearch={clearSearch}
           query={query}
-          musixmatchArtistId={relatedArtistData}
+          musixmatchArtist={relatedArtistData}
           relatedArtistError={setRelatedArtistError}
         />
       </Route>
