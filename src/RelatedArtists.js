@@ -6,6 +6,9 @@ function RelatedArtist(props) {
 
     <div>
       <h3>Related Artists</h3>
+      {props.error === true && (
+        <p>Something went wrong. PLease try again later.</p>
+      )}
       {props.relatedArtist && (
         <ul>
         {props.relatedArtist.map((artist, index) => (

@@ -133,6 +133,7 @@ function ArtistPage(props) {
       )}
       <RelatedArtists
        relatedArtist={relatedArtists}
+       error={relatedArtistsError}
       />
   </div>
   );
