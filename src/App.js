@@ -15,6 +15,8 @@ function App() {
   const [error, setError] = useState(false);
   const [relatedArtistData, setRelatedArtistData] = useState([]);
   const [relatedArtistError, setRelatedArtistError] = useState(false);
+  const [eventsData, setEventsData] = useState([]);
+  const [eventsError, setEventsError] = useState(false);
 
   //Update query on user input
 
@@ -52,27 +54,31 @@ function App() {
       .then(data => setRelatedArtistData(data.message.body.artist_list[0].artist)).then(error =>  setRelatedArtistError(false))
       .catch(error =>  setRelatedArtistError(true));
 
+  //Search on ticket master database for artist name
 
-    //Store query in local storage
-    localStorage.setItem('query', query);
+    fetch(`https://app.ticketmaster.com/discovery/v2/attractions.json?keyword=${query}&apikey=hkbdfMkgTS9PiqJdNMKdj5bg7aKGR4Wk&classificationName=music`)
+    .then(response => {
+      if (response.ok) {
+        return response.json(response);
+      } else {
+        throw new Error('Something went wrong ...');
+      }
+     })
+      .then(data => setEventsData(data._embedded.attractions[0])).then(error =>  setEventsError(false))
+      .catch(error =>  setEventsError(true));
 
   }
 
+  console.log(eventsData);
+  console.log(eventsError);
 
-
-  console.log(data);
-  console.log(error);
-  console.log(query);
-  console.log(relatedArtistData);
-  console.log(relatedArtistError);
-
-
-
-  //Clear search results when user navigates back to the search page
+  //Clear search results and events data when user navigates back to the search page
 
   const clearSearch = () => {
     setData([]);
     setQuery('');
+    setEventsData([]);
+    localStorage.setItem('eventArtist', '');
   }
 
 
@@ -96,6 +102,8 @@ function App() {
           query={query}
           musixmatchArtist={relatedArtistData}
           relatedArtistError={setRelatedArtistError}
+          ticketMasterArtist={eventsData}
+          ticketMasterError={eventsError}
         />
       </Route>
     </div>

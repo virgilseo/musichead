@@ -26,14 +26,20 @@ function ArtistPage(props) {
   // Store musixmatch artist id in local storage
 
   if (props.musixmatchArtist.artist_id)  {
-    localStorage.setItem('relatedArtist',props.musixmatchArtist.artist_id);
+    localStorage.setItem('relatedArtist', props.musixmatchArtist.artist_id);
   }
 
-  //Get query and artist id from local storage and store them in variables
+  //Store ticket master artist id in local local storage
 
-  const localQuery = localStorage.getItem('query');
+  if (props.ticketMasterArtist.id ) {
+    localStorage.setItem('eventArtist', props.ticketMasterArtist.id)
+  }
+
+  //Get artist id's from local storage and store them in variables
+
   const localArtistId = localStorage.getItem('artist');
   const localRelatedArtistId = localStorage.getItem('relatedArtist');
+  const localEventArtistId = localStorage.getItem('eventArtist');
 
 
   //Fetch artist information from the discogs api
@@ -74,7 +80,7 @@ function ArtistPage(props) {
 
   useEffect(() => {
 
-    fetch(`https://app.ticketmaster.com/discovery/v2/events.json?apikey=hkbdfMkgTS9PiqJdNMKdj5bg7aKGR4Wk&keyword=${localQuery}`)
+    fetch(`https://app.ticketmaster.com/discovery/v2/events.json?apikey=hkbdfMkgTS9PiqJdNMKdj5bg7aKGR4Wk&attractionId=${localEventArtistId}`)
     .then(response => {
       if (response.ok) {
         return response.json();
@@ -84,7 +90,7 @@ function ArtistPage(props) {
      })
       .then(data => setEventsData(data._embedded.events)).then(error => setEventsError(false))
       .catch(error => setEventsError(true))
-  }, [localQuery])
+  }, [localEventArtistId])
 
   // Filter out events that are not related to music
   const filteredEvents = eventsData.filter((event) => event.classifications).filter((event) => event.classifications[0].segment.name === 'Music');
@@ -106,12 +112,8 @@ function ArtistPage(props) {
   }, [localRelatedArtistId])
 
 
-
-  console.log(relatedArtists);
-  console.log(relatedArtistsError);
-  console.log(props.musixmatchArtist);
-  console.log(localRelatedArtistId);
-
+ console.log(props.ticketMasterArtist.id);
+ console.log(eventsData);
 
   return (
     <div>
