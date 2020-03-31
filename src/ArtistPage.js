@@ -131,10 +131,12 @@ function ArtistPage(props) {
           events={filteredEvents}
         />
       )}
-      <RelatedArtists
-       relatedArtist={relatedArtists}
-       error={relatedArtistsError}
-      />
+      {relatedArtists.length > 0  && (
+        <RelatedArtists
+         relatedArtist={relatedArtists}
+         error={relatedArtistsError}
+        />
+      )}
   </div>
   );
 }
