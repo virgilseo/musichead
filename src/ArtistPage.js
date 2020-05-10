@@ -14,8 +14,6 @@ function ArtistPage(props) {
   const [releases, setReleases] = useState([]);
   const [eventsData, setEventsData] = useState([]);
   const [eventsError, setEventsError] = useState('');
-  const [relatedArtists, setRelatedArtist] = useState([]);
-  const [relatedArtistsError, setRelatedArtistError] = useState(false);
 
   //Store discogs artist id in local storage
 
@@ -95,22 +93,6 @@ function ArtistPage(props) {
   // Filter out events that are not related to music
   const filteredEvents = eventsData.filter((event) => event.classifications).filter((event) => event.classifications[0].segment.name === 'Music');
 
-  //Fetch related artist from musixmatch api
-
-  useEffect(() => {
-
-    fetch(`https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/artist.related.get?artist_id=${localRelatedArtistId}&page_size=10&page=1&apikey=460e6f530ef1588d40304db0a3596ab4`)
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error('Something went wrong ...');
-      }
-     })
-      .then(data => setRelatedArtist(data.message.body.artist_list)).then(error => setRelatedArtistError(false))
-      .catch(error => setRelatedArtistError(true))
-  }, [localRelatedArtistId])
-
 
  console.log(props.ticketMasterArtist.id);
  console.log(eventsData);
@@ -133,12 +115,9 @@ function ArtistPage(props) {
           events={filteredEvents}
         />
       )}
-      {relatedArtists.length > 0  && (
-        <RelatedArtists
-         relatedArtist={relatedArtists}
-         error={relatedArtistsError}
-        />
-      )}
+      <RelatedArtists
+       relatedArtistId={localRelatedArtistId}
+      />
   </div>
   );
 }
