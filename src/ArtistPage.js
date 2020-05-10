@@ -74,24 +74,9 @@ function ArtistPage(props) {
 
   }, [localArtistId])
 
-  // Fetch artist events from ticket master api
-
-  useEffect(() => {
-
-    fetch(`https://app.ticketmaster.com/discovery/v2/events.json?apikey=hkbdfMkgTS9PiqJdNMKdj5bg7aKGR4Wk&attractionId=${localEventArtistId}`)
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error('Something went wrong ...');
-      }
-     })
-      .then(data => setEventsData(data._embedded.events)).then(error => setEventsError(false))
-      .catch(error => setEventsError(true))
-  }, [localEventArtistId])
 
   // Filter out events that are not related to music
-  const filteredEvents = eventsData.filter((event) => event.classifications).filter((event) => event.classifications[0].segment.name === 'Music');
+//  const filteredEvents = eventsData.filter((event) => event.classifications).filter((event) => event.classifications[0].segment.name === 'Music');
 
 
  console.log(props.ticketMasterArtist.id);
@@ -110,11 +95,9 @@ function ArtistPage(props) {
           releases={releases}
         />
       )}
-      {eventsData.length > 0 && (
-        <Events
-          events={filteredEvents}
-        />
-      )}
+      <Events
+        eventsArtistId={localEventArtistId}
+      />
       <RelatedArtists
        relatedArtistId={localRelatedArtistId}
       />
