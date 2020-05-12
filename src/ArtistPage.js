@@ -1,6 +1,5 @@
 import React from 'react';
 import {Link} from 'react-router-dom';
-import {useState, useEffect} from 'react';
 import Discogs from './Discogs.js';
 import Events from './Events.js';
 import RelatedArtists from './RelatedArtists.js';
@@ -8,11 +7,6 @@ import Releases from './Releases.js';
 
 function ArtistPage(props) {
 
-  //Set initial state
-
-  const [data, setData] = useState([]);
-  const [discogsError, setError] = useState(false);
-  
   //Store discogs artist id in local storage
 
   if (props.hits.id ) {
@@ -37,38 +31,14 @@ function ArtistPage(props) {
   const localRelatedArtistId = localStorage.getItem('relatedArtist');
   const localEventArtistId = localStorage.getItem('eventArtist');
 
-
-  //Fetch artist information from the discogs api
-
-  useEffect(() => {
-
-    fetch(`https://api.discogs.com/artists/${localArtistId}`)
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error('Something went wrong ...');
-      }
-     })
-      .then(data => setData(data)).then(error => setError(false))
-      .catch(error => setError(true))
-
-  }, [localArtistId])
-
-
-
   return (
     <div>
       <Link to='/'>
         <i className='material-icons' onClick={props.clearSearch}>arrow_back</i>
       </Link>
-      {discogsError === true ? (
-        <p>Something went wrong. Please try again later.</p>
-      ) : (
-        <Discogs
-          data={data}
-        />
-      )}
+      <Discogs
+        discogsArtistId={localArtistId}
+      />
       <Releases
         discogsArtistId={localArtistId}
       />
