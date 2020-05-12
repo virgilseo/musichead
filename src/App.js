@@ -28,49 +28,31 @@ function App() {
 
   function queryDatabase() {
 
+    const axios = require('axios')
+
     //Search on discogs database for artist by name
 
-    fetch(`https://api.discogs.com/database/search?q=${query}&page=1&per_page=1&key=zMRtiWGGUaDpqSnajoth&secret=ETfHznfoZWHdomEtLyKqmsSDfPDzghIY`)
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error('Something went wrong ...');
-      }
-     })
-      .then(data => setData(data.results[0])).then(error =>  setError(false))
-      .catch(error =>  setError(true));
+    axios.get(`https://api.discogs.com/database/search?q=${query}&page=1&per_page=1&key=zMRtiWGGUaDpqSnajoth&secret=ETfHznfoZWHdomEtLyKqmsSDfPDzghIY`)
+      .then(response => setData(response.data.results[0])).then(error => setError(false))
+      .catch(error =>  console.log(error))
 
   //Search on musixmatch database for artist by name
 
-    fetch(`https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/artist.search?q_artist=${query}&page_size=1&apikey=460e6f530ef1588d40304db0a3596ab4`)
-    .then(response => {
-      if (response.ok) {
-        return response.json(response);
-      } else {
-        throw new Error('Something went wrong ...');
-      }
-     })
-      .then(data => setRelatedArtistData(data.message.body.artist_list[0].artist)).then(error =>  setRelatedArtistError(false))
+    axios.get(`https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/artist.search?q_artist=${query}&page_size=1&apikey=460e6f530ef1588d40304db0a3596ab4`)
+      .then(response => setRelatedArtistData(response.data.message.body.artist_list[0].artist)).then(error =>  setRelatedArtistError(false))
       .catch(error =>  setRelatedArtistError(true));
 
   //Search on ticket master database for artist name
 
-    fetch(`https://app.ticketmaster.com/discovery/v2/attractions.json?keyword=${query}&apikey=hkbdfMkgTS9PiqJdNMKdj5bg7aKGR4Wk&classificationName=music`)
-    .then(response => {
-      if (response.ok) {
-        return response.json(response);
-      } else {
-        throw new Error('Something went wrong ...');
-      }
-     })
-      .then(data => setEventsData(data._embedded.attractions[0])).then(error =>  setEventsError(false))
+    axios.get(`https://app.ticketmaster.com/discovery/v2/attractions.json?keyword=${query}&apikey=hkbdfMkgTS9PiqJdNMKdj5bg7aKGR4Wk&classificationName=music`)
+      .then(response => setEventsData(response.data._embedded.attractions[0])).then(error =>  setEventsError(false))
       .catch(error =>  setEventsError(true));
-
   }
 
   console.log(eventsData);
   console.log(eventsError);
+  console.log(error);
+  console.log(data)
 
   //Clear search results and events data when user navigates back to the search page
 
