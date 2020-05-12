@@ -5,9 +5,9 @@ function Discogs(props) {
 
   // Desconstruct props
 
-  const {data, releases} = props;
+  const {data} = props;
 
-  // Display artist information(biography, web links and releases)
+  // Display artist information(biography and web links)
   // on the page uisng information from the discogs api
 
   return(
@@ -46,20 +46,6 @@ function Discogs(props) {
                 </li>
               ))}
             </ul>
-        </section>
-      )}
-      {releases && (
-        <section>
-         <h3>Discography</h3>
-           <ul>
-             {releases.map((release, index) => (
-               <li key={index}>
-                 <p>{release.artist}</p>
-                 <p>{release.title}</p>
-                 <p>{release.year}</p>
-               </li>
-             ))}
-           </ul>
         </section>
       )}
    </div>

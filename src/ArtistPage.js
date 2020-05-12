@@ -3,7 +3,8 @@ import {Link} from 'react-router-dom';
 import {useState, useEffect} from 'react';
 import Discogs from './Discogs.js';
 import Events from './Events.js';
-import RelatedArtists from './RelatedArtists.js'
+import RelatedArtists from './RelatedArtists.js';
+import Releases from './Releases.js';
 
 function ArtistPage(props) {
 
@@ -11,10 +12,7 @@ function ArtistPage(props) {
 
   const [data, setData] = useState([]);
   const [discogsError, setError] = useState(false);
-  const [releases, setReleases] = useState([]);
-  const [eventsData, setEventsData] = useState([]);
-  const [eventsError, setEventsError] = useState('');
-
+  
   //Store discogs artist id in local storage
 
   if (props.hits.id ) {
@@ -57,30 +55,7 @@ function ArtistPage(props) {
 
   }, [localArtistId])
 
-// Fetch artist discography from discogs api
 
-  useEffect(() => {
-
-    fetch(`https://api.discogs.com//artists/${localArtistId}/releases?page=1&per_page=500&sort=year&sort_order=asc`)
-    .then(response => {
-      if (response.ok) {
-        return response.json();
-      } else {
-        throw new Error('Something went wrong ...');
-      }
-     })
-      .then(data => setReleases(data.releases.filter(release => release.role === 'Main'))).then(error => setError(false))
-      .catch(error => setError(true))
-
-  }, [localArtistId])
-
-
-  // Filter out events that are not related to music
-//  const filteredEvents = eventsData.filter((event) => event.classifications).filter((event) => event.classifications[0].segment.name === 'Music');
-
-
- console.log(props.ticketMasterArtist.id);
- console.log(eventsData);
 
   return (
     <div>
@@ -92,14 +67,16 @@ function ArtistPage(props) {
       ) : (
         <Discogs
           data={data}
-          releases={releases}
         />
       )}
+      <Releases
+        discogsArtistId={localArtistId}
+      />
       <Events
         eventsArtistId={localEventArtistId}
       />
       <RelatedArtists
-       relatedArtistId={localRelatedArtistId}
+        relatedArtistId={localRelatedArtistId}
       />
   </div>
   );
