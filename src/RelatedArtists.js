@@ -7,7 +7,8 @@ function RelatedArtist(props) {
 
   const res = useFetch(`https://cors-anywhere.herokuapp.com/https://api.musixmatch.com/ws/1.1/artist.related.get?artist_id=${props.relatedArtistId}&page_size=10&page=1&apikey=460e6f530ef1588d40304db0a3596ab4`)
 
-  //Render related artist on the page 
+  //Render related artist on the page
+  console.log(res)
 
   return(
 
@@ -19,7 +20,7 @@ function RelatedArtist(props) {
       {res.loading === true && (
         <p>Loading...</p>
       )}
-      {res.response && (
+      {res.response && res.response.data.message.body.length !== 0 && (
         <ul>
         {res.response.data.message.body.artist_list.map((artist, index) => (
           <li key={index}>{artist.artist.artist_name}</li>
