@@ -10,13 +10,16 @@ function App() {
 
   //Set the initial state
 
-  const [query, setQuery] = useState('');
-  const [data, setData] = useState([]);
-  const [discogsError, setDiscogsError] = useState(false);
-  const [relatedArtistData, setRelatedArtistData] = useState([]);
-  const [relatedArtistError, setRelatedArtistError] = useState(false);
-  const [eventsData, setEventsData] = useState([]);
-  const [eventsError, setEventsError] = useState(false);
+  const [query, setQuery] = useState('')
+  const [data, setData] = useState([])
+  const [discogsError, setDiscogsError] = useState(false)
+  const [relatedArtistData, setRelatedArtistData] = useState([])
+  const [relatedArtistError, setRelatedArtistError] = useState(false)
+  const [eventsData, setEventsData] = useState([])
+  const [eventsError, setEventsError] = useState(false)
+  const [discogsLoader, setDiscogsLoader] = useState(false)
+  const [relatedLoader, setRelatedLoader] = useState(false)
+  const [eventsLoader, setEventsLoader] = useState(false)
 
   //Update query on user input
 
@@ -30,6 +33,16 @@ function App() {
 
     const axios = require('axios')
 
+   //Clear descogs data
+
+    setData([])
+    
+   //Enable loaders
+
+    setDiscogsLoader(true)
+    setRelatedLoader(true)
+    setEventsLoader(true)
+
    //Reset error variables
 
     setDiscogsError(false)
@@ -42,6 +55,8 @@ function App() {
       &per_page=1&key=zMRtiWGGUaDpqSnajoth&secret=ETfHznfoZWHdomEtLyKqmsSDfPDzghIY`)
       .then(response => setData(response.data.results[0]))
       .catch(error =>  setDiscogsError(true))
+      .finally(() => setDiscogsLoader(false))
+
 
   //Search on musixmatch database for artist by name
 
@@ -49,6 +64,7 @@ function App() {
       ws/1.1/artist.search?q_artist=${query}&page_size=1&apikey=460e6f530ef1588d40304db0a3596ab4`)
       .then(response => setRelatedArtistData(response.data.message.body.artist_list[0].artist))
       .catch(error =>  setRelatedArtistError(true))
+      .finally(() => setRelatedLoader(false))
 
   //Search on ticket master database for artist name
 
@@ -57,6 +73,7 @@ function App() {
       .then(response => setEventsData(response.data._embedded ?
         response.data._embedded.attractions[0] : response))
       .catch(error =>  setEventsError(true))
+      .finally(() => setEventsLoader(false))
   }
 
   console.log(eventsData)
@@ -91,6 +108,9 @@ function App() {
           relatedArtistError={relatedArtistError}
           eventsError={eventsError}
           eventsData={eventsData}
+          discogsLoader={discogsLoader}
+          relatedLoader={relatedLoader}
+          eventsLoader={eventsLoader}
           query={query}
         />
         <Footer />

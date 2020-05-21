@@ -15,17 +15,26 @@ function Search(props) {
        />
        <button className='search-btn' onClick={props.query !== '' ? props.queryDatabase : undefined }>Search</button>
      </div>
-     {props.discogsData !== undefined && props.discogsData.id && props.discogsError === false && props.hits !== [] && (
-       <div className='search-results'>
-         <p>We found 1 search result</p>
-         <p>{props.discogsData.title}</p>
-         <img src={props.discogsData.cover_image} alt={props.discogsData.title} />
-         <Link to='/results'>
-           <button>Expand</button>
-         </Link>
+     {props.discogsLoader && props.relatedLoader && props.eventsLoader ? (
+       <div>
+         <p>Loading...</p>
        </div>
+     ) : (
+       <section>
+       {props.discogsData !== undefined && props.discogsData.id && props.discogsError === false &&  (
+         <div className='search-results'>
+           <p>We found 1 search result</p>
+           <p>{props.discogsData.title}</p>
+           <img src={props.discogsData.cover_image} alt={props.discogsData.title} />
+           <Link to='/results'>
+             <button>Expand</button>
+           </Link>
+         </div>
+       )}
+       </section>
      )}
-     {props.discogsData === undefined && props.discogsError === false && (
+     {props.discogsData === undefined && props.discogsError === false &&
+       !props.discogsLoader && !props.relatedLoader && !props.eventsLoader && (
        <div>
         <p>Sorry, we found no results :(</p>
        </div>
