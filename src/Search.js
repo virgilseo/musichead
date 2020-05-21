@@ -15,24 +15,34 @@ function Search(props) {
        />
        <button className='search-btn' onClick={props.query !== '' ? props.queryDatabase : undefined }>Search</button>
      </div>
-     {props.hits !== undefined && props.hits.id && props.error === false && props.hits !== [] && (
+     {props.discogsData !== undefined && props.discogsData.id && props.discogsError === false && props.hits !== [] && (
        <div className='search-results'>
          <p>We found 1 search result</p>
-         <p>{props.hits.title}</p>
-         <img src={props.hits.cover_image} alt={props.hits.title} />
+         <p>{props.discogsData.title}</p>
+         <img src={props.discogsData.cover_image} alt={props.discogsData.title} />
          <Link to='/results'>
            <button>Expand</button>
          </Link>
        </div>
      )}
-     {props.hits === undefined && props.error === false && (
+     {props.discogsData === undefined && props.discogsError === false && (
        <div>
         <p>Sorry, we found no results :(</p>
        </div>
      )}
-     {props.error === true && (
+     {props.discogsError === true && (
        <div>
-         <p>Something went wrong. Please try again later.</p>
+         <p>We are having trouble comunicating with the discogs api.</p>
+       </div>
+     )}
+     {props.relatedArtistError === true && (
+       <div>
+         <p>We are having trouble comunicating with the musixmatch api.</p>
+       </div>
+     )}
+     {props.eventsError === true &&  (
+       <div>
+         <p>We are having trouble comunicating with the ticket master api.</p>
        </div>
      )}
     </div>
